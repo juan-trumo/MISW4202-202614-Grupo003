@@ -15,7 +15,7 @@ Stack: Python + Flask, SQLite (una BD por servicio), Docker Compose.
 | 2 | auth-service, BFFs, núcleo de audit-service (TC-AU) | ✅ |
 | 3 | consent-service y quote-service, modos claim/lookup y caché (TC-C) | ✅ |
 | 4 | policy-service con HMAC y `partner_client.py` (TC-I) | ✅ |
-| 5 | Falla cerrada de auditoría de punta a punta (TC-AD) | Pendiente |
+| 5 | Falla cerrada de auditoría de punta a punta (TC-AD) | ✅ |
 | 6 | Arnés del experimento (`experiment/run.py`, C1–C5) | Pendiente |
 | 7 | Generador del borrador H810 | Pendiente |
 | 8 | Revisión crítica | Pendiente |
@@ -124,7 +124,10 @@ Para correr solo un grupo:
 python -m pytest tests -v -k TC_AU     # autenticación y autorización
 python -m pytest tests -v -k TC_C      # consentimiento
 python -m pytest tests -v -k TC_I      # integridad de la emisión
+python -m pytest tests -v -k TC_AD     # auditoría y falla cerrada
 ```
+
+> Las pruebas `TC_AD_02` **detienen y congelan audit-service** unos segundos para comprobar la falla cerrada, y lo restauran al terminar. No las corras mientras alguien más usa el stack.
 
 ### Paso 6 — Apagar
 
@@ -229,7 +232,27 @@ Alterados enviados: 7 · rechazados: 7 · filas nuevas por alterados: 0 · valid
 
 Para ver el conteo de pólizas guardadas en cualquier momento: `http://127.0.0.1:5004/policies/count`.
 
-## 5. Arquitectura
+## 5. Probar la auditoría (100 % auditado y falla cerrada)
+
+**Cobertura:** `experiment/audit_probe.py` envía 15 requests, permitidos y denegados, a auth, consent, quote y policy, y verifica que cada uno quedó auditado por su correlation_id.
+
+```powershell
+.venv\Scripts\python experiment/audit_probe.py      # Mac/Linux: .venv/bin/python ...
+```
+
+Resultado esperado (resumen): `Requests: 15 · con evento: 15 · audit_coverage: 100.00%`.
+
+**Falla cerrada a mano:** con el stack arriba y un token de socio en `$soc` (sección 3):
+
+```powershell
+docker compose -f docker-compose.yml -f docker-compose.experiment.yml stop audit
+Invoke-RestMethod -Method Post http://localhost:8002/quotes -ContentType "application/json" `
+  -Headers @{Authorization="Bearer $soc"} -Body '{"customer_id":"C-001","product":"auto"}'
+# -> 503 {"error":"audit_unavailable",...}: sin auditoría no se entregan datos ni se emiten pólizas
+docker compose -f docker-compose.yml -f docker-compose.experiment.yml start audit
+```
+
+## 6. Arquitectura
 
 ```
   Cliente ──▶ bff-cliente :8001          bff-socio :8002 ◀── Socio A / B
@@ -258,7 +281,7 @@ Reglas clave:
 
 ---
 
-## 6. Configuración (`.env`)
+## 7. Configuración (`.env`)
 
 | Variable | Valor por defecto | Qué controla |
 |---|---|---|
@@ -283,7 +306,7 @@ Credenciales de desarrollo (datos ficticios):
 
 ---
 
-## 7. Comandos disponibles
+## 8. Comandos disponibles
 
 | Tarea | Windows (`scripts/tasks.ps1 <tarea>`) | Mac/Linux |
 |---|---|---|
@@ -302,7 +325,7 @@ En Windows la forma completa es `powershell -ExecutionPolicy Bypass -File script
 
 ---
 
-## 8. Estructura del repo
+## 9. Estructura del repo
 
 ```
 .
@@ -321,7 +344,7 @@ En Windows la forma completa es `powershell -ExecutionPolicy Bypass -File script
 
 ---
 
-## 9. Problemas comunes
+## 10. Problemas comunes
 
 | Síntoma | Causa probable | Solución |
 |---|---|---|
@@ -336,7 +359,7 @@ En Windows la forma completa es `powershell -ExecutionPolicy Bypass -File script
 
 ---
 
-## 10. Cómo contribuir
+## 11. Cómo contribuir
 
 - Una rama por integrante: `feat/<servicio>`. PR a `main` con las pruebas del servicio en verde.
 - Commits con el formato `feat(policy): verificación HMAC antes de insertar`.

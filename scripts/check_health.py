@@ -45,6 +45,8 @@ def http_ok(url: str) -> bool:
 
 
 def main() -> int:
+    # En Windows, sin esto los acentos salen mal al redirigir o en Git Bash.
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     status = compose_status()
     ok = True
     for service in EXPECTED:

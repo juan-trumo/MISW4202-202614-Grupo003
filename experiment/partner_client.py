@@ -192,6 +192,8 @@ def run_integrity_suite(a: Partner, b: Partner, repetitions: int = 1) -> dict:
 
 
 def main() -> int:
+    # En Windows, sin esto los acentos salen mal al redirigir o en Git Bash.
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     a, b = partners_from_env()
     summary = run_integrity_suite(a, b)
     print(f"Payload íntegro: HTTP {summary['intact_status']}, "
