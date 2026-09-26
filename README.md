@@ -14,7 +14,7 @@ Stack: Python + Flask, SQLite (una BD por servicio), Docker Compose.
 | 1 | Esqueleto, `common/`, Docker Compose, `/health` | ✅ |
 | 2 | auth-service, BFFs, núcleo de audit-service (TC-AU) | ✅ |
 | 3 | consent-service y quote-service, modos claim/lookup y caché (TC-C) | ✅ |
-| 4 | policy-service con HMAC y `partner_client.py` (TC-I) | Pendiente |
+| 4 | policy-service con HMAC y `partner_client.py` (TC-I) | ✅ |
 | 5 | Falla cerrada de auditoría de punta a punta (TC-AD) | Pendiente |
 | 6 | Arnés del experimento (`experiment/run.py`, C1–C5) | Pendiente |
 | 7 | Generador del borrador H810 | Pendiente |
@@ -123,6 +123,7 @@ Para correr solo un grupo:
 ```bash
 python -m pytest tests -v -k TC_AU     # autenticación y autorización
 python -m pytest tests -v -k TC_C      # consentimiento
+python -m pytest tests -v -k TC_I      # integridad de la emisión
 ```
 
 ### Paso 6 — Apagar
@@ -198,7 +199,37 @@ Cambia en `.env` la línea `CONSENT_MODE=lookup` por `CONSENT_MODE=claim` y vuel
 
 ---
 
-## 4. Arquitectura
+## 4. Probar SEG-08 (integridad de la emisión)
+
+`experiment/partner_client.py` actúa como el socio A: firma un payload con su clave HMAC y luego lo altera como lo haría un intermediario comprometido.
+
+Windows:
+```powershell
+.venv\Scripts\python experiment/partner_client.py
+```
+
+Mac/Linux:
+```bash
+.venv/bin/python experiment/partner_client.py
+```
+
+Resultado esperado:
+```
+Payload íntegro: HTTP 201, filas nuevas 1
+OK   TC-I-02 prima alterada                                HTTP 422 integrity_failed
+OK   TC-I-03 cobertura alterada                            HTTP 422 integrity_failed
+OK   TC-I-04 tomador alterado                              HTTP 422 integrity_failed
+OK   TC-I-05 sin X-Signature                               HTTP 400 missing_signature
+OK   TC-I-06 firmado con clave de B y token de A           HTTP 422 integrity_failed
+OK   TC-I-07 partner_uuid del body distinto al del token   HTTP 403 partner_mismatch
+OK   TC-I-08 campo extra inyectado                         HTTP 400 unknown_field
+
+Alterados enviados: 7 · rechazados: 7 · filas nuevas por alterados: 0 · validation_rate: 1.00
+```
+
+Para ver el conteo de pólizas guardadas en cualquier momento: `http://127.0.0.1:5004/policies/count`.
+
+## 5. Arquitectura
 
 ```
   Cliente ──▶ bff-cliente :8001          bff-socio :8002 ◀── Socio A / B
@@ -215,7 +246,7 @@ Cambia en `.env` la línea `CONSENT_MODE=lookup` por `CONSENT_MODE=claim` y vuel
 | auth-service | Valida client_id + secreto (hash PBKDF2) y emite un JWT RS256 de vida corta con scopes mínimos | Autenticar actores, intercambio de tokens |
 | consent-service | Crea, consulta y revoca consentimientos; decide si un uso está permitido | Revocar acceso, separar entidades |
 | quote-service | Cotiza con datos financieros (mock) solo si el consentimiento lo permite | Autorizar actores |
-| policy-service | Emite pólizas verificando HMAC antes de guardar *(Parte 4)* | Verificar integridad del mensaje |
+| policy-service | Emite pólizas verificando HMAC antes de guardar; rechaza alteraciones, campos extra, firma ajena y nonce repetido | Verificar integridad del mensaje |
 | audit-service | Registro append-only de cada decisión ALLOW/DENY | Mantener auditoría |
 | bff-cliente / bff-socio | Única entrada de cada canal; reenvían sin lógica de negocio | Limitar exposición |
 
@@ -227,7 +258,7 @@ Reglas clave:
 
 ---
 
-## 5. Configuración (`.env`)
+## 6. Configuración (`.env`)
 
 | Variable | Valor por defecto | Qué controla |
 |---|---|---|
@@ -252,7 +283,7 @@ Credenciales de desarrollo (datos ficticios):
 
 ---
 
-## 6. Comandos disponibles
+## 7. Comandos disponibles
 
 | Tarea | Windows (`scripts/tasks.ps1 <tarea>`) | Mac/Linux |
 |---|---|---|
@@ -271,7 +302,7 @@ En Windows la forma completa es `powershell -ExecutionPolicy Bypass -File script
 
 ---
 
-## 7. Estructura del repo
+## 8. Estructura del repo
 
 ```
 .
@@ -290,7 +321,7 @@ En Windows la forma completa es `powershell -ExecutionPolicy Bypass -File script
 
 ---
 
-## 8. Problemas comunes
+## 9. Problemas comunes
 
 | Síntoma | Causa probable | Solución |
 |---|---|---|
@@ -305,7 +336,7 @@ En Windows la forma completa es `powershell -ExecutionPolicy Bypass -File script
 
 ---
 
-## 9. Cómo contribuir
+## 10. Cómo contribuir
 
 - Una rama por integrante: `feat/<servicio>`. PR a `main` con las pruebas del servicio en verde.
 - Commits con el formato `feat(policy): verificación HMAC antes de insertar`.

@@ -13,7 +13,7 @@ select = ["E", "F", "I", "B", "UP"]
 
 [tool.ruff.lint.isort]
 # Módulos locales de cada servicio (services/<svc>/): van después de common.
-known-first-party = ["common", "tests"]
+known-first-party = ["common", "tests", "experiment"]
 known-local-folder = ["models", "passwords", "seed"]
 
 [tool.pytest.ini_options]
