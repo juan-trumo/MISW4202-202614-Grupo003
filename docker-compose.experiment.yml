@@ -1,0 +1,13 @@
+# Override de observación para el arnés y los tests e2e (ver CLAUDE.md §6).
+# Publica policy y audit SOLO en 127.0.0.1 para leer /policies/count, /events y /stats,
+# que además exigen EXPERIMENT_MODE=1. Los endpoints de negocio siguen exigiendo JWT.
+# Se añaden a la red "edge" porque una red internal: true no puede publicar puertos.
+
+services:
+  policy:
+    ports: ["127.0.0.1:5004:5004"]
+    networks: [edge, internal]
+
+  audit:
+    ports: ["127.0.0.1:5005:5005"]
+    networks: [edge, internal]

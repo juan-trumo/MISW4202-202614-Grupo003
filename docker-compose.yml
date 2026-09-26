@@ -1,0 +1,126 @@
+# Experimento de seguridad Solventa (SEG-02, SEG-08).
+# Táctica "limitar exposición": solo los BFF están en la red "edge" y publican puertos.
+# El resto vive en la red "internal" (internal: true), sin puertos en el host.
+# Variables: .env (copia de .env.example) o --env-file experiment/configs/Cx.env.
+
+name: solventa-seg
+
+x-service-env: &service-env
+  EXPERIMENT_MODE: ${EXPERIMENT_MODE:-1}
+  AUTH_URL: http://auth:5001
+  CONSENT_URL: http://consent:5002
+  QUOTE_URL: http://quote:5003
+  POLICY_URL: http://policy:5004
+  AUDIT_URL: http://audit:5005
+  AUDIT_TIMEOUT_S: ${AUDIT_TIMEOUT_S:-2}
+  SEED_SECRETS: ${SEED_SECRETS:?Falta SEED_SECRETS. Copia .env.example a .env}
+  DATA_DIR: /data
+  LOG_LEVEL: ${LOG_LEVEL:-INFO}
+
+x-healthcheck: &healthcheck
+  test:
+    - CMD
+    - python
+    - -c
+    - "import os, urllib.request; urllib.request.urlopen('http://127.0.0.1:%s/health' % os.environ['PORT'], timeout=2)"
+  interval: 5s
+  timeout: 3s
+  retries: 12
+  start_period: 5s
+
+services:
+  auth:
+    build: { context: ., dockerfile: services/auth/Dockerfile }
+    environment:
+      <<: *service-env
+      SERVICE_CLIENT_ID: svc-auth
+      TOKEN_TTL: ${TOKEN_TTL:-300}
+      CONSENT_MODE: ${CONSENT_MODE:-lookup}
+      PARTNER_A_UUID: ${PARTNER_A_UUID:?Falta PARTNER_A_UUID}
+      PARTNER_B_UUID: ${PARTNER_B_UUID:?Falta PARTNER_B_UUID}
+    volumes: [auth_data:/data]
+    networks: [internal]
+    healthcheck: *healthcheck
+
+  audit:
+    build: { context: ., dockerfile: services/audit/Dockerfile }
+    environment:
+      <<: *service-env
+    volumes: [audit_data:/data]
+    networks: [internal]
+    healthcheck: *healthcheck
+    depends_on:
+      auth: { condition: service_healthy }
+
+  consent:
+    build: { context: ., dockerfile: services/consent/Dockerfile }
+    environment:
+      <<: *service-env
+      SERVICE_CLIENT_ID: svc-consent
+    volumes: [consent_data:/data]
+    networks: [internal]
+    healthcheck: *healthcheck
+    depends_on:
+      auth: { condition: service_healthy }
+      audit: { condition: service_healthy }
+
+  quote:
+    build: { context: ., dockerfile: services/quote/Dockerfile }
+    environment:
+      <<: *service-env
+      SERVICE_CLIENT_ID: svc-quote
+      CONSENT_MODE: ${CONSENT_MODE:-lookup}
+      CONSENT_CACHE_TTL: ${CONSENT_CACHE_TTL:-0}
+    networks: [internal]
+    healthcheck: *healthcheck
+    depends_on:
+      auth: { condition: service_healthy }
+      audit: { condition: service_healthy }
+      consent: { condition: service_healthy }
+
+  policy:
+    build: { context: ., dockerfile: services/policy/Dockerfile }
+    environment:
+      <<: *service-env
+      SERVICE_CLIENT_ID: svc-policy
+      PARTNER_HMAC_KEYS: ${PARTNER_HMAC_KEYS:?Falta PARTNER_HMAC_KEYS}
+    volumes: [policy_data:/data]
+    networks: [internal]
+    healthcheck: *healthcheck
+    depends_on:
+      auth: { condition: service_healthy }
+      audit: { condition: service_healthy }
+
+  bff-cliente:
+    build: { context: ., dockerfile: services/bff_cliente/Dockerfile }
+    environment:
+      <<: *service-env
+    ports: ["8001:8001"]
+    networks: [edge, internal]
+    healthcheck: *healthcheck
+    depends_on:
+      auth: { condition: service_healthy }
+      consent: { condition: service_healthy }
+
+  bff-socio:
+    build: { context: ., dockerfile: services/bff_socio/Dockerfile }
+    environment:
+      <<: *service-env
+    ports: ["8002:8002"]
+    networks: [edge, internal]
+    healthcheck: *healthcheck
+    depends_on:
+      auth: { condition: service_healthy }
+      quote: { condition: service_healthy }
+      policy: { condition: service_healthy }
+
+networks:
+  edge: {}
+  internal:
+    internal: true
+
+volumes:
+  auth_data: {}
+  consent_data: {}
+  policy_data: {}
+  audit_data: {}

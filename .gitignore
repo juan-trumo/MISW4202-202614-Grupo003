@@ -1,0 +1,20 @@
+# Secretos y entorno local
+.env
+.venv/
+CLAUDE.md
+prompt_experimento_H810.md
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Datos locales (las BD y claves viven en volúmenes de Docker)
+data/
+*.db
+*.pem
+
+# Herramientas de terceros
+.kilo/
+.vscode/
+.idea/

@@ -1,0 +1,23 @@
+[project]
+name = "solventa-experimento-seguridad"
+version = "0.1.0"
+description = "Experimento de arquitectura SEG-02 / SEG-08 (MISW4202, Grupo 003)"
+requires-python = ">=3.11"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.isort]
+# Módulos locales de cada servicio (services/<svc>/): van después de common.
+known-first-party = ["common", "tests"]
+known-local-folder = ["models", "passwords", "seed"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+addopts = "--import-mode=importlib"
+testpaths = ["common/tests", "services", "tests"]
+markers = ["e2e: pruebas end-to-end contra docker compose (requieren make up)"]
