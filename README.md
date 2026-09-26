@@ -17,7 +17,7 @@ Stack: Python + Flask, SQLite (una BD por servicio), Docker Compose.
 | 4 | policy-service con HMAC y `partner_client.py` (TC-I) | ✅ |
 | 5 | Falla cerrada de auditoría de punta a punta (TC-AD) | ✅ |
 | 6 | Arnés del experimento (`experiment/run.py`, C1–C5) | ✅ |
-| 7 | Generador del borrador H810 | Pendiente |
+| 7 | Generador del borrador H810 | ✅ |
 | 8 | Revisión crítica | Pendiente |
 
 ---
@@ -294,6 +294,23 @@ Corrida corta para probar que todo funciona (~3 min; no escribe en `results/`):
 
 Nunca edites estos archivos a mano: el informe H810 se genera desde ellos.
 
+### Generar el borrador del H810
+
+Después de la corrida oficial, y con las horas de todos en `docs/effort_log.csv`:
+
+```powershell
+.venv\Scripts\python -m pytest -v > results/pytest_output.txt   # evidencia de las pruebas
+.venv\Scripts\python experiment/report.py                        # escribe docs/H810_borrador.md
+```
+
+El borrador trae las láminas 2 a 5: resultados y esfuerzo, hipótesis e historias, análisis (qué se confirmó, qué decisiones lo favorecieron y qué se cambiaría en lo que no se cumplió, con su costo) y la lista de evidencias con su archivo de origen y correlation_ids de ejemplo para capturar la auditoría. Todo número sale de `results.json` o de `effort_log.csv`; si faltan horas, aparece como **PENDIENTE**. Si cambian los datos, vuelve a generarlo en lugar de editarlo.
+
+Formato de `docs/effort_log.csv` (una fila por sesión de trabajo, horas reales, se acepta `1.5` o `"1,5"`):
+```
+fecha,integrante,tarea,horas
+2026-09-20,Ana Pérez,auth-service y pruebas TC-AU,3.5
+```
+
 ## 7. Arquitectura
 
 ```
@@ -361,7 +378,7 @@ Credenciales de desarrollo (datos ficticios):
 | Pruebas unitarias | `test-unit` | `make test-unit` |
 | Todas las pruebas | `test` | `make test` |
 | Experimento (acepta argumentos, sección 6) | `experiment` | `make experiment ARGS="..."` |
-| Borrador H810 *(Parte 7)* | `report` | `make report` |
+| Borrador H810 | `report` | `make report` |
 
 En Windows la forma completa es `powershell -ExecutionPolicy Bypass -File scripts/tasks.ps1 <tarea>`. Las tareas `health`, `lint` y `test*` usan el `python` del sistema: activa antes el entorno con `.venv\Scripts\Activate.ps1`, o usa directamente `.venv\Scripts\python ...` como en los pasos anteriores.
 

@@ -278,6 +278,13 @@ def audit_coverage(records: list[dict]) -> dict:
         entry["events"] += int(ok)
     matched = sum(flags)
     missing = [r for r, ok in zip(records, flags, strict=True) if not ok]
+    # Un ALLOW y un DENY de ejemplo por servicio: correlation_ids para capturar la evidencia
+    # con GET /events?correlation_id=... (lámina 5 del H810).
+    samples: dict[tuple[str, bool], dict] = {}
+    for record, ok in zip(records, flags, strict=True):
+        key = (record["service"], record["status"] < 400)
+        if ok and key not in samples:
+            samples[key] = record
     log.info("Auditoría: %d de %d requests con evento", matched, len(records))
     return {
         "requests": len(records),
@@ -285,6 +292,7 @@ def audit_coverage(records: list[dict]) -> dict:
         "coverage": matched / len(records) if records else 0.0,
         "by_service": by_service,
         "missing": missing[:20],
+        "samples": sorted(samples.values(), key=lambda r: (r["service"], r["status"])),
         "meets_target": bool(records) and matched == len(records),
     }
 
