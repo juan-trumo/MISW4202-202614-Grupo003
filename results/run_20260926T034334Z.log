@@ -1,0 +1,18 @@
+2026-09-25 22:43:34,246 INFO Corrida 20260926T034334Z: configs=['C1', 'C2', 'C3', 'C4', 'C5'] reps=5 poll=5.0s tope=1200.0s
+2026-09-25 22:43:34,251 INFO Construyendo imágenes
+2026-09-25 22:43:55,488 INFO Desplegando C1 con {'CONSENT_MODE': 'claim', 'TOKEN_TTL': '60', 'CONSENT_CACHE_TTL': '0'}
+2026-09-25 22:45:40,046 INFO C1 listo en 62 s: min=60.61 mediana=60.64 max=60.75 sin_rechazo=0 cumple=True
+2026-09-25 22:45:40,048 INFO Desplegando C2 con {'CONSENT_MODE': 'claim', 'TOKEN_TTL': '300', 'CONSENT_CACHE_TTL': '0'}
+2026-09-25 22:51:24,073 INFO C2 listo en 303 s: min=301.015 mediana=301.047 max=301.188 sin_rechazo=0 cumple=False
+2026-09-25 22:51:24,078 INFO Desplegando C3 con {'CONSENT_MODE': 'claim', 'TOKEN_TTL': '900', 'CONSENT_CACHE_TTL': '0'}
+2026-09-25 23:07:08,799 INFO C3 listo en 903 s: min=900.844 mediana=900.969 max=901.313 sin_rechazo=0 cumple=False
+2026-09-25 23:07:08,805 INFO Desplegando C4 con {'CONSENT_MODE': 'lookup', 'TOKEN_TTL': '900', 'CONSENT_CACHE_TTL': '0'}
+2026-09-25 23:07:52,906 INFO C4 listo en 2 s: min=0.047 mediana=0.078 max=0.094 sin_rechazo=0 cumple=True
+2026-09-25 23:07:52,907 INFO Desplegando C5 con {'CONSENT_MODE': 'lookup', 'TOKEN_TTL': '900', 'CONSENT_CACHE_TTL': '60'}
+2026-09-25 23:09:35,871 INFO C5 listo en 62 s: min=60.093 mediana=60.125 max=60.219 sin_rechazo=0 cumple=True
+2026-09-25 23:09:35,904 INFO Desplegando base con configuración base
+2026-09-25 23:10:18,960 INFO Sonda de auditoría: 15 de 15 con evento
+2026-09-25 23:10:21,610 INFO SEG-08: alterados=35 rechazados=35 filas_nuevas=0 validation_rate=1.000
+2026-09-25 23:10:35,044 INFO Auditoría: 1581 de 1581 requests con evento
+2026-09-25 23:10:37,471 INFO Veredicto: {'a': True, 'b': True, 'c': True, 'sensitivity_claim': {'C1': True, 'C2': False, 'C3': False}}
+2026-09-25 23:10:37,473 INFO Resultados en C:\Users\AUGUST~1\AppData\Local\Temp\solventa-evidencia-20260925-224141
