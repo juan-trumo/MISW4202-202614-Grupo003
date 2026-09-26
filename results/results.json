@@ -1,0 +1,781 @@
+{
+  "run_id": "20260926T034334Z-b7e4f0",
+  "git_commit": "7c85e75666412ff106454c395155099f04caed97",
+  "git_dirty": false,
+  "host": {
+    "node": "DESKTOP-PTNIMN2",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.4",
+    "docker": "29.4.1"
+  },
+  "started_at": "2026-09-26T03:43:34.246724+00:00",
+  "finished_at": "2026-09-26T04:10:36.166347+00:00",
+  "parameters": {
+    "configs": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5"
+    ],
+    "reps": 5,
+    "poll_s": 5.0,
+    "cap_s": 1200.0,
+    "target_s": 300
+  },
+  "seg02": [
+    {
+      "config": "C1",
+      "mode": "claim",
+      "token_ttl": 60,
+      "cache_ttl": null,
+      "reps": [
+        {
+          "rep": 1,
+          "customer_id": "C-001",
+          "propagation_s": 60.625,
+          "denied_code": 403,
+          "denied_error": "consent_not_found",
+          "polls": 14,
+          "reauths": 1,
+          "errors": [],
+          "t_revoke": "2026-09-26T03:44:39.330239+00:00",
+          "t_denied": "2026-09-26T03:45:39.943072+00:00"
+        },
+        {
+          "rep": 2,
+          "customer_id": "C-002",
+          "propagation_s": 60.64,
+          "denied_code": 403,
+          "denied_error": "consent_not_found",
+          "polls": 14,
+          "reauths": 1,
+          "errors": [],
+          "t_revoke": "2026-09-26T03:44:39.294755+00:00",
+          "t_denied": "2026-09-26T03:45:39.938631+00:00"
+        },
+        {
+          "rep": 3,
+          "customer_id": "C-003",
+          "propagation_s": 60.719,
+          "denied_code": 403,
+          "denied_error": "consent_not_found",
+          "polls": 14,
+          "reauths": 1,
+          "errors": [],
+          "t_revoke": "2026-09-26T03:44:39.303775+00:00",
+          "t_denied": "2026-09-26T03:45:40.030837+00:00"
+        },
+        {
+          "rep": 4,
+          "customer_id": "C-004",
+          "propagation_s": 60.75,
+          "denied_code": 403,
+          "denied_error": "consent_not_found",
+          "polls": 14,
+          "reauths": 1,
+          "errors": [],
+          "t_revoke": "2026-09-26T03:44:39.288888+00:00",
+          "t_denied": "2026-09-26T03:45:40.046936+00:00"
+        },
+        {
+          "rep": 5,
+          "customer_id": "C-005",
+          "propagation_s": 60.61,
+          "denied_code": 403,
+          "denied_error": "consent_not_found",
+          "polls": 14,
+          "reauths": 1,
+          "errors": [],
+          "t_revoke": "2026-09-26T03:44:39.345983+00:00",
+          "t_denied": "2026-09-26T03:45:39.954095+00:00"
+        }
+      ],
+      "min": 60.61,
+      "median": 60.64,
+      "max": 60.75,
+      "unobserved": 0,
+      "target_s": 300,
+      "meets_target": true
+    },
+    {
+      "config": "C2",
+      "mode": "claim",
+      "token_ttl": 300,
+      "cache_ttl": null,
+      "reps": [
+        {
+          "rep": 1,
+          "customer_id": "C-001",
+          "propagation_s": 301.141,
+          "denied_code": 403,
+          "denied_error": "consent_not_found",
+          "polls": 62,
+          "reauths": 1,
+          "errors": [],
+          "t_revoke": "2026-09-26T03:46:22.881080+00:00",
+          "t_denied": "2026-09-26T03:51:24.019495+00:00"
+        },
+        {
+          "rep": 2,
+          "customer_id": "C-002",
+          "propagation_s": 301.188,
+          "denied_code": 403,
+          "denied_error": "consent_not_found",
+          "polls": 62,
+          "reauths": 1,
+          "errors": [],
+          "t_revoke": "2026-09-26T03:46:22.888239+00:00",
+          "t_denied": "2026-09-26T03:51:24.073506+00:00"
+        },
+        {
+          "rep": 3,
+          "customer_id": "C-003",
+          "propagation_s": 301.046,
+          "denied_code": 403,
+          "denied_error": "consent_not_found",
+          "polls": 62,
+          "reauths": 1,
+          "errors": [],
+          "t_revoke": "2026-09-26T03:46:22.922288+00:00",
+          "t_denied": "2026-09-26T03:51:23.956840+00:00"
+        },
+        {
+          "rep": 4,
+          "customer_id": "C-004",
+          "propagation_s": 301.015,
+          "denied_code": 403,
+          "denied_error": "consent_not_found",
+          "polls": 62,
+          "reauths": 1,
+          "errors": [],
+          "t_revoke": "2026-09-26T03:46:23.001455+00:00",
+          "t_denied": "2026-09-26T03:51:24.010412+00:00"
+        },
+        {
+          "rep": 5,
+          "customer_id": "C-005",
+          "propagation_s": 301.047,
+          "denied_code": 403,
+          "denied_error": "consent_not_found",
+          "polls": 62,
+          "reauths": 1,
+          "errors": [],
+          "t_revoke": "2026-09-26T03:46:22.905886+00:00",
+          "t_denied": "2026-09-26T03:51:23.952807+00:00"
+        }
+      ],
+      "min": 301.015,
+      "median": 301.047,
+      "max": 301.188,
+      "unobserved": 0,
+      "target_s": 300,
+      "meets_target": false
+    },
+    {
+      "config": "C3",
+      "mode": "claim",
+      "token_ttl": 900,
+      "cache_ttl": null,
+      "reps": [
+        {
+          "rep": 1,
+          "customer_id": "C-001",
+          "propagation_s": 900.969,
+          "denied_code": 403,
+          "denied_error": "consent_not_found",
+          "polls": 182,
+          "reauths": 1,
+          "errors": [],
+          "t_revoke": "2026-09-26T03:52:07.584287+00:00",
+          "t_denied": "2026-09-26T04:07:08.563180+00:00"
+        },
+        {
+          "rep": 2,
+          "customer_id": "C-002",
+          "propagation_s": 901.313,
+          "denied_code": 403,
+          "denied_error": "consent_not_found",
+          "polls": 182,
+          "reauths": 1,
+          "errors": [],
+          "t_revoke": "2026-09-26T03:52:07.486429+00:00",
+          "t_denied": "2026-09-26T04:07:08.785368+00:00"
+        },
+        {
+          "rep": 3,
+          "customer_id": "C-003",
+          "propagation_s": 901.0,
+          "denied_code": 403,
+          "denied_error": "consent_not_found",
+          "polls": 182,
+          "reauths": 1,
+          "errors": [],
+          "t_revoke": "2026-09-26T03:52:07.564103+00:00",
+          "t_denied": "2026-09-26T04:07:08.559960+00:00"
+        },
+        {
+          "rep": 4,
+          "customer_id": "C-004",
+          "propagation_s": 900.969,
+          "denied_code": 403,
+          "denied_error": "consent_not_found",
+          "polls": 182,
+          "reauths": 1,
+          "errors": [],
+          "t_revoke": "2026-09-26T03:52:07.805043+00:00",
+          "t_denied": "2026-09-26T04:07:08.781604+00:00"
+        },
+        {
+          "rep": 5,
+          "customer_id": "C-005",
+          "propagation_s": 900.844,
+          "denied_code": 403,
+          "denied_error": "consent_not_found",
+          "polls": 182,
+          "reauths": 1,
+          "errors": [],
+          "t_revoke": "2026-09-26T03:52:07.945868+00:00",
+          "t_denied": "2026-09-26T04:07:08.799295+00:00"
+        }
+      ],
+      "min": 900.844,
+      "median": 900.969,
+      "max": 901.313,
+      "unobserved": 0,
+      "target_s": 300,
+      "meets_target": false
+    },
+    {
+      "config": "C4",
+      "mode": "lookup",
+      "token_ttl": 900,
+      "cache_ttl": 0,
+      "reps": [
+        {
+          "rep": 1,
+          "customer_id": "C-001",
+          "propagation_s": 0.078,
+          "denied_code": 403,
+          "denied_error": "consent_revoked",
+          "polls": 1,
+          "reauths": 0,
+          "errors": [],
+          "t_revoke": "2026-09-26T04:07:52.795700+00:00",
+          "t_denied": "2026-09-26T04:07:52.868098+00:00"
+        },
+        {
+          "rep": 2,
+          "customer_id": "C-002",
+          "propagation_s": 0.078,
+          "denied_code": 403,
+          "denied_error": "consent_revoked",
+          "polls": 1,
+          "reauths": 0,
+          "errors": [],
+          "t_revoke": "2026-09-26T04:07:52.825346+00:00",
+          "t_denied": "2026-09-26T04:07:52.898840+00:00"
+        },
+        {
+          "rep": 3,
+          "customer_id": "C-003",
+          "propagation_s": 0.047,
+          "denied_code": 403,
+          "denied_error": "consent_revoked",
+          "polls": 1,
+          "reauths": 0,
+          "errors": [],
+          "t_revoke": "2026-09-26T04:07:52.848214+00:00",
+          "t_denied": "2026-09-26T04:07:52.901689+00:00"
+        },
+        {
+          "rep": 4,
+          "customer_id": "C-004",
+          "propagation_s": 0.063,
+          "denied_code": 403,
+          "denied_error": "consent_revoked",
+          "polls": 1,
+          "reauths": 0,
+          "errors": [],
+          "t_revoke": "2026-09-26T04:07:52.809052+00:00",
+          "t_denied": "2026-09-26T04:07:52.874349+00:00"
+        },
+        {
+          "rep": 5,
+          "customer_id": "C-005",
+          "propagation_s": 0.094,
+          "denied_code": 403,
+          "denied_error": "consent_revoked",
+          "polls": 1,
+          "reauths": 0,
+          "errors": [],
+          "t_revoke": "2026-09-26T04:07:52.782075+00:00",
+          "t_denied": "2026-09-26T04:07:52.873317+00:00"
+        }
+      ],
+      "min": 0.047,
+      "median": 0.078,
+      "max": 0.094,
+      "unobserved": 0,
+      "target_s": 300,
+      "meets_target": true
+    },
+    {
+      "config": "C5",
+      "mode": "lookup",
+      "token_ttl": 900,
+      "cache_ttl": 60,
+      "reps": [
+        {
+          "rep": 1,
+          "customer_id": "C-001",
+          "propagation_s": 60.219,
+          "denied_code": 403,
+          "denied_error": "consent_revoked",
+          "polls": 13,
+          "reauths": 0,
+          "errors": [],
+          "t_revoke": "2026-09-26T04:08:35.648701+00:00",
+          "t_denied": "2026-09-26T04:09:35.871878+00:00"
+        },
+        {
+          "rep": 2,
+          "customer_id": "C-002",
+          "propagation_s": 60.125,
+          "denied_code": 403,
+          "denied_error": "consent_revoked",
+          "polls": 13,
+          "reauths": 0,
+          "errors": [],
+          "t_revoke": "2026-09-26T04:08:35.696775+00:00",
+          "t_denied": "2026-09-26T04:09:35.820196+00:00"
+        },
+        {
+          "rep": 3,
+          "customer_id": "C-003",
+          "propagation_s": 60.093,
+          "denied_code": 403,
+          "denied_error": "consent_revoked",
+          "polls": 13,
+          "reauths": 0,
+          "errors": [],
+          "t_revoke": "2026-09-26T04:08:35.620649+00:00",
+          "t_denied": "2026-09-26T04:09:35.718885+00:00"
+        },
+        {
+          "rep": 4,
+          "customer_id": "C-004",
+          "propagation_s": 60.125,
+          "denied_code": 403,
+          "denied_error": "consent_revoked",
+          "polls": 13,
+          "reauths": 0,
+          "errors": [],
+          "t_revoke": "2026-09-26T04:08:35.688894+00:00",
+          "t_denied": "2026-09-26T04:09:35.813210+00:00"
+        },
+        {
+          "rep": 5,
+          "customer_id": "C-005",
+          "propagation_s": 60.172,
+          "denied_code": 403,
+          "denied_error": "consent_revoked",
+          "polls": 13,
+          "reauths": 0,
+          "errors": [],
+          "t_revoke": "2026-09-26T04:08:35.630776+00:00",
+          "t_denied": "2026-09-26T04:09:35.800389+00:00"
+        }
+      ],
+      "min": 60.093,
+      "median": 60.125,
+      "max": 60.219,
+      "unobserved": 0,
+      "target_s": 300,
+      "meets_target": true
+    }
+  ],
+  "audit": {
+    "requests": 1581,
+    "events": 1581,
+    "coverage": 1.0,
+    "by_service": {
+      "auth-service": {
+        "requests": 72,
+        "events": 72
+      },
+      "consent-service": {
+        "requests": 79,
+        "events": 79
+      },
+      "quote-service": {
+        "requests": 1390,
+        "events": 1390
+      },
+      "policy-service": {
+        "requests": 40,
+        "events": 40
+      }
+    },
+    "missing": [],
+    "samples": [
+      {
+        "correlation_id": "c1-r1-e902a8ed-d302-440c-a937-96baa97e34b7",
+        "service": "auth-service",
+        "method": "POST",
+        "path": "/auth/token",
+        "status": 200
+      },
+      {
+        "correlation_id": "probe-cdbfa2f3-1cfc-4062-8199-7e7747223161",
+        "service": "auth-service",
+        "method": "POST",
+        "path": "/auth/token",
+        "status": 401
+      },
+      {
+        "correlation_id": "c1-r1-4e19c540-bae8-4795-8dc7-9dfb0aaf6a55",
+        "service": "consent-service",
+        "method": "GET",
+        "path": "/consents",
+        "status": 200
+      },
+      {
+        "correlation_id": "probe-cee5c8ac-9c1e-4c14-ad20-6890a19cc13c",
+        "service": "consent-service",
+        "method": "GET",
+        "path": "/consents/6bf2d65d-b6c1-445d-921b-0ee12322cc72",
+        "status": 404
+      },
+      {
+        "correlation_id": "probe-4b1f4ed1-ff39-42a5-bc79-17907bd30d38",
+        "service": "policy-service",
+        "method": "POST",
+        "path": "/policies",
+        "status": 201
+      },
+      {
+        "correlation_id": "probe-783a999a-2c05-4a82-8bb0-129f5de2f98c",
+        "service": "policy-service",
+        "method": "POST",
+        "path": "/policies",
+        "status": 422
+      },
+      {
+        "correlation_id": "c1-r1-584d5d5e-1048-487f-af4b-7f6799ddd6ed",
+        "service": "quote-service",
+        "method": "POST",
+        "path": "/quotes",
+        "status": 200
+      },
+      {
+        "correlation_id": "c1-r1-f7ca60db-77fc-43bd-b18f-320b92e46eeb",
+        "service": "quote-service",
+        "method": "POST",
+        "path": "/quotes",
+        "status": 401
+      }
+    ],
+    "meets_target": true
+  },
+  "seg08": {
+    "tampered_sent": 35,
+    "rejected": 35,
+    "rows_added": 0,
+    "validation_rate": 1.0,
+    "intact_accepted": true,
+    "cases": [
+      {
+        "case_id": "TC-I-02",
+        "name": "prima alterada",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-03",
+        "name": "cobertura alterada",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-04",
+        "name": "tomador alterado",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-05",
+        "name": "sin X-Signature",
+        "status": 400,
+        "error": "missing_signature",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-06",
+        "name": "firmado con clave de B y token de A",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-07",
+        "name": "partner_uuid del body distinto al del token",
+        "status": 403,
+        "error": "partner_mismatch",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-08",
+        "name": "campo extra inyectado",
+        "status": 400,
+        "error": "unknown_field",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-02",
+        "name": "prima alterada",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-03",
+        "name": "cobertura alterada",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-04",
+        "name": "tomador alterado",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-05",
+        "name": "sin X-Signature",
+        "status": 400,
+        "error": "missing_signature",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-06",
+        "name": "firmado con clave de B y token de A",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-07",
+        "name": "partner_uuid del body distinto al del token",
+        "status": 403,
+        "error": "partner_mismatch",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-08",
+        "name": "campo extra inyectado",
+        "status": 400,
+        "error": "unknown_field",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-02",
+        "name": "prima alterada",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-03",
+        "name": "cobertura alterada",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-04",
+        "name": "tomador alterado",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-05",
+        "name": "sin X-Signature",
+        "status": 400,
+        "error": "missing_signature",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-06",
+        "name": "firmado con clave de B y token de A",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-07",
+        "name": "partner_uuid del body distinto al del token",
+        "status": 403,
+        "error": "partner_mismatch",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-08",
+        "name": "campo extra inyectado",
+        "status": 400,
+        "error": "unknown_field",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-02",
+        "name": "prima alterada",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-03",
+        "name": "cobertura alterada",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-04",
+        "name": "tomador alterado",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-05",
+        "name": "sin X-Signature",
+        "status": 400,
+        "error": "missing_signature",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-06",
+        "name": "firmado con clave de B y token de A",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-07",
+        "name": "partner_uuid del body distinto al del token",
+        "status": 403,
+        "error": "partner_mismatch",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-08",
+        "name": "campo extra inyectado",
+        "status": 400,
+        "error": "unknown_field",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-02",
+        "name": "prima alterada",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-03",
+        "name": "cobertura alterada",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-04",
+        "name": "tomador alterado",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-05",
+        "name": "sin X-Signature",
+        "status": 400,
+        "error": "missing_signature",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-06",
+        "name": "firmado con clave de B y token de A",
+        "status": 422,
+        "error": "integrity_failed",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-07",
+        "name": "partner_uuid del body distinto al del token",
+        "status": 403,
+        "error": "partner_mismatch",
+        "rejected": true,
+        "as_expected": true
+      },
+      {
+        "case_id": "TC-I-08",
+        "name": "campo extra inyectado",
+        "status": 400,
+        "error": "unknown_field",
+        "rejected": true,
+        "as_expected": true
+      }
+    ],
+    "meets_target": true
+  },
+  "verdict": {
+    "a": true,
+    "b": true,
+    "c": true,
+    "sensitivity_claim": {
+      "C1": true,
+      "C2": false,
+      "C3": false
+    }
+  }
+}
