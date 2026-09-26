@@ -24,6 +24,8 @@ class ServiceContext:
     name: str
     public_key: Callable[[], bytes]
     audit: AuditClient | None
+    # Token del propio servicio para llamar a otros servicios internos (p. ej. consent:read).
+    service_token: ServiceTokenProvider | None = None
 
 
 def env_int(name: str, default: int) -> int:
@@ -78,14 +80,15 @@ def create_app(
 
     audit = None
     if audit_enabled:
+        service_token = service_token or _default_service_token()
         audit = AuditClient(
             service_name,
             os.environ.get("AUDIT_URL", "http://audit:5005"),
-            service_token or _default_service_token(),
+            service_token,
             env_float("AUDIT_TIMEOUT_S", 2.0),
         )
 
-    app.extensions["solventa"] = ServiceContext(service_name, public_key, audit)
+    app.extensions["solventa"] = ServiceContext(service_name, public_key, audit, service_token)
     init_correlation(app)
     register_error_handlers(app)
 

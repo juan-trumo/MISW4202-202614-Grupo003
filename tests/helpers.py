@@ -15,9 +15,12 @@ BFF_SOCIO = "http://localhost:8002"
 AUDIT = "http://127.0.0.1:5005"  # solo observación (docker-compose.experiment.yml)
 POLICY = "http://127.0.0.1:5004"
 
-# Servicios protegidos alcanzables para probar la validación del JWT. Las Partes 3 y 4 añaden
-# /quotes y /policies.
-PROTECTED_ENDPOINTS = [pytest.param(f"{AUDIT}/events", id="audit-events")]
+# Servicios protegidos alcanzables para probar la validación del JWT (TC-AU-03..05). Ninguno
+# acepta un token de cliente (solo consent:write). La Parte 4 añade /policies.
+PROTECTED_ENDPOINTS = [
+    pytest.param(f"{AUDIT}/events", id="audit-events"),
+    pytest.param(f"{BFF_SOCIO}/quotes", id="quotes"),
+]
 
 
 def load_env() -> dict[str, str]:
