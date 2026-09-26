@@ -26,13 +26,14 @@ lint:
 	$(PYTHON) -m ruff check .
 
 test-unit:
-	$(PYTHON) -m pytest common/tests services -q
+	$(PYTHON) -m pytest common/tests services experiment/tests -q
 
 test:
 	$(PYTHON) -m pytest -q
 
+# Corrida corta: make experiment ARGS="--configs C1,C4 --reps 1 --out-dir /tmp/prueba"
 experiment:
-	$(PYTHON) experiment/run.py
+	$(PYTHON) experiment/run.py $(ARGS)
 
 report:
 	$(PYTHON) experiment/report.py

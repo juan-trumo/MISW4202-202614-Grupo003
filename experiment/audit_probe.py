@@ -47,8 +47,8 @@ def _bearer(token: str | None) -> dict:
     return {"Authorization": f"Bearer {token}"} if token else {}
 
 
-def _token(bff: str, client_id: str, secret: str) -> str:
-    resp = requests.post(f"{bff}/auth/token",
+def _token(session: requests.Session, bff: str, client_id: str, secret: str) -> str:
+    resp = session.post(f"{bff}/auth/token",
                          json={"client_id": client_id, "client_secret": secret}, timeout=TIMEOUT)
     resp.raise_for_status()
     return resp.json()["access_token"]
@@ -62,20 +62,20 @@ class Probe:
     send: Callable[[str], requests.Response]
 
 
-def build_probes(env: dict[str, str]) -> list[Probe]:
+def build_probes(env: dict[str, str], session: requests.Session) -> list[Probe]:
     secrets = json.loads(env["SEED_SECRETS"])
-    a, b = partners_from_env(env)
-    customer_token = _token(BFF_CLIENTE, CUSTOMER, secrets[CUSTOMER])
-    other_customer = _token(BFF_CLIENTE, "cliente-004", secrets["cliente-004"])
+    a, b = partners_from_env(env, session)
+    customer_token = _token(session, BFF_CLIENTE, CUSTOMER, secrets[CUSTOMER])
+    other_customer = _token(session, BFF_CLIENTE, "cliente-004", secrets["cliente-004"])
     state: dict[str, str] = {}
 
     def post(url, cid, token=None, body=None, extra=None):
         headers = {"X-Correlation-ID": cid, **_bearer(token), **(extra or {})}
-        return requests.post(url, json=body, headers=headers, timeout=TIMEOUT)
+        return session.post(url, json=body, headers=headers, timeout=TIMEOUT)
 
     def get(url, cid, token=None):
-        return requests.get(url, headers={"X-Correlation-ID": cid, **_bearer(token)},
-                            timeout=TIMEOUT)
+        return session.get(url, headers={"X-Correlation-ID": cid, **_bearer(token)},
+                           timeout=TIMEOUT)
 
     def create_consent(cid):
         resp = post(f"{BFF_CLIENTE}/consents", cid, customer_token,
@@ -126,10 +126,12 @@ def build_probes(env: dict[str, str]) -> list[Probe]:
     ]
 
 
-def run_audit_coverage(env: dict[str, str] | None = None) -> dict:
+def run_audit_coverage(
+    env: dict[str, str] | None = None, session: requests.Session | None = None
+) -> dict:
     env = env or load_env()
     results = []
-    for probe in build_probes(env):
+    for probe in build_probes(env, session or requests.Session()):
         cid = new_cid()
         resp = probe.send(cid)
         events = audit_events(cid)

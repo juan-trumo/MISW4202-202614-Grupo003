@@ -36,11 +36,13 @@ class Partner:
     partner_uuid: str
     hmac_key: str
     bff_url: str = BFF_SOCIO
+    # Sesión HTTP inyectable: el arnés pasa una que registra cada request (audit_coverage).
+    session: requests.Session = field(default_factory=requests.Session, repr=False)
     _token: str | None = field(default=None, repr=False)
 
     def token(self, refresh: bool = False) -> str:
         if self._token is None or refresh:
-            resp = requests.post(
+            resp = self.session.post(
                 f"{self.bff_url}/auth/token",
                 json={"client_id": self.client_id, "client_secret": self.secret},
                 timeout=TIMEOUT,
@@ -77,18 +79,21 @@ class Partner:
             headers[SIGNATURE_HEADER] = signature
         if cid:
             headers["X-Correlation-ID"] = cid
-        return requests.post(f"{self.bff_url}/policies", json=payload, headers=headers,
-                             timeout=TIMEOUT)
+        return self.session.post(f"{self.bff_url}/policies", json=payload, headers=headers,
+                                 timeout=TIMEOUT)
 
 
-def partners_from_env(env: dict[str, str] | None = None) -> tuple[Partner, Partner]:
+def partners_from_env(
+    env: dict[str, str] | None = None, session: requests.Session | None = None
+) -> tuple[Partner, Partner]:
     env = env or load_env()
+    session = session or requests.Session()
     secrets = json.loads(env["SEED_SECRETS"])
     keys = json.loads(env["PARTNER_HMAC_KEYS"])
     a, b = env["PARTNER_A_UUID"], env["PARTNER_B_UUID"]
     return (
-        Partner("socio-a", secrets["socio-a"], a, keys[a]),
-        Partner("socio-b", secrets["socio-b"], b, keys[b]),
+        Partner("socio-a", secrets["socio-a"], a, keys[a], session=session),
+        Partner("socio-b", secrets["socio-b"], b, keys[b], session=session),
     )
 
 

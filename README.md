@@ -16,7 +16,7 @@ Stack: Python + Flask, SQLite (una BD por servicio), Docker Compose.
 | 3 | consent-service y quote-service, modos claim/lookup y caché (TC-C) | ✅ |
 | 4 | policy-service con HMAC y `partner_client.py` (TC-I) | ✅ |
 | 5 | Falla cerrada de auditoría de punta a punta (TC-AD) | ✅ |
-| 6 | Arnés del experimento (`experiment/run.py`, C1–C5) | Pendiente |
+| 6 | Arnés del experimento (`experiment/run.py`, C1–C5) | ✅ |
 | 7 | Generador del borrador H810 | Pendiente |
 | 8 | Revisión crítica | Pendiente |
 
@@ -252,7 +252,49 @@ Invoke-RestMethod -Method Post http://localhost:8002/quotes -ContentType "applic
 docker compose -f docker-compose.yml -f docker-compose.experiment.yml start audit
 ```
 
-## 6. Arquitectura
+## 6. Correr el experimento (genera la evidencia)
+
+El arnés recrea el stack con cada configuración, mide la propagación de la revocación y al final corre la sonda de auditoría y la suite de integridad. Deja todo en `results/`.
+
+| Config | Modo | TOKEN_TTL | Caché | Esperado |
+|---|---|---|---|---|
+| C1 | claim | 60 s | — | Cumple (≤ 60 s) |
+| C2 | claim | 300 s | — | En el límite (≈ 300 s) |
+| C3 | claim | 900 s | — | **Viola** la meta: es la evidencia del punto de sensibilidad, no un fallo |
+| C4 | lookup | 900 s | 0 s | Cumple (≈ 0 s) |
+| C5 | lookup | 900 s | 60 s | Cumple (≤ 60 s) |
+
+**Antes de la corrida oficial:** stack arriba (Paso 3), pruebas en verde (Paso 5), el equipo con los cambios ya subidos (el JSON guarda el commit y si había cambios sin subir) y el computador sin suspenderse. **Dura unos 30 minutos**; C3 sola tarda unos 15.
+
+Corrida oficial (Windows / Mac-Linux):
+```powershell
+.venv\Scripts\Activate.ps1
+powershell -ExecutionPolicy Bypass -File scripts/tasks.ps1 experiment
+```
+```bash
+source .venv/bin/activate && make experiment
+```
+
+Corrida corta para probar que todo funciona (~3 min; no escribe en `results/`):
+```powershell
+.venv\Scripts\python experiment/run.py --configs C1,C4 --reps 1 --out-dir $env:TEMP\prueba
+```
+```bash
+.venv/bin/python experiment/run.py --configs C1,C4 --reps 1 --out-dir /tmp/prueba
+```
+
+**Qué produce:**
+
+| Archivo | Contenido |
+|---|---|
+| `results/results.json` | Todo: parámetros, commit, máquina, cada repetición, auditoría, SEG-08 y el veredicto (a, b, c) calculado |
+| `results/results.csv` | Una fila por repetición de SEG-02 |
+| `results/propagation.png` | Mínimo, mediana y máximo por configuración, con la línea de la meta en 300 s |
+| `results/run_<fecha>.log` | Log de la corrida |
+
+Nunca edites estos archivos a mano: el informe H810 se genera desde ellos.
+
+## 7. Arquitectura
 
 ```
   Cliente ──▶ bff-cliente :8001          bff-socio :8002 ◀── Socio A / B
@@ -281,7 +323,7 @@ Reglas clave:
 
 ---
 
-## 7. Configuración (`.env`)
+## 8. Configuración (`.env`)
 
 | Variable | Valor por defecto | Qué controla |
 |---|---|---|
@@ -306,7 +348,7 @@ Credenciales de desarrollo (datos ficticios):
 
 ---
 
-## 8. Comandos disponibles
+## 9. Comandos disponibles
 
 | Tarea | Windows (`scripts/tasks.ps1 <tarea>`) | Mac/Linux |
 |---|---|---|
@@ -318,14 +360,14 @@ Credenciales de desarrollo (datos ficticios):
 | Linter (ruff) | `lint` | `make lint` |
 | Pruebas unitarias | `test-unit` | `make test-unit` |
 | Todas las pruebas | `test` | `make test` |
-| Experimento *(Parte 6)* | `experiment` | `make experiment` |
+| Experimento (acepta argumentos, sección 6) | `experiment` | `make experiment ARGS="..."` |
 | Borrador H810 *(Parte 7)* | `report` | `make report` |
 
 En Windows la forma completa es `powershell -ExecutionPolicy Bypass -File scripts/tasks.ps1 <tarea>`. Las tareas `health`, `lint` y `test*` usan el `python` del sistema: activa antes el entorno con `.venv\Scripts\Activate.ps1`, o usa directamente `.venv\Scripts\python ...` como en los pasos anteriores.
 
 ---
 
-## 9. Estructura del repo
+## 10. Estructura del repo
 
 ```
 .
@@ -337,14 +379,14 @@ En Windows la forma completa es `powershell -ExecutionPolicy Bypass -File script
 ├── common/                        # librería compartida: JWT, scopes, auditoría, HMAC, errores
 ├── services/<servicio>/           # app.py, models.py, Dockerfile, requirements.txt, tests/
 ├── tests/                         # pruebas end-to-end contra Docker (TC-*)
-├── experiment/                    # arnés del experimento (Parte 6)
+├── experiment/                    # arnés (run.py), configs C1–C5, partner_client.py, audit_probe.py
 ├── results/                       # resultados generados por el arnés
 └── docs/effort_log.csv            # horas REALES del equipo: fecha,integrante,tarea,horas
 ```
 
 ---
 
-## 10. Problemas comunes
+## 11. Problemas comunes
 
 | Síntoma | Causa probable | Solución |
 |---|---|---|
@@ -359,7 +401,7 @@ En Windows la forma completa es `powershell -ExecutionPolicy Bypass -File script
 
 ---
 
-## 11. Cómo contribuir
+## 12. Cómo contribuir
 
 - Una rama por integrante: `feat/<servicio>`. PR a `main` con las pruebas del servicio en verde.
 - Commits con el formato `feat(policy): verificación HMAC antes de insertar`.

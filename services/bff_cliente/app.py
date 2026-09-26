@@ -28,6 +28,11 @@ def create_consent():
     return forward(CONSENT_URL, "/consents")
 
 
+@app.get("/consents")
+def list_consents():
+    return forward(CONSENT_URL, "/consents")
+
+
 @app.get("/consents/<consent_id>")
 def get_consent(consent_id: str):
     return forward(CONSENT_URL, f"/consents/{quote(consent_id, safe='')}")

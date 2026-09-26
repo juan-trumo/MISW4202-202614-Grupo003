@@ -110,8 +110,8 @@ def test_TC_AU_05_claims_alterados_con_firma_original_401(url, token_for):
     assert resp.json()["error"] == "invalid_token"
 
 
-@pytest.mark.parametrize("method,path", [("post", "/consents"), ("get", "/consents/x"),
-                                         ("post", "/consents/x/revoke")])
+@pytest.mark.parametrize("method,path", [("post", "/consents"), ("get", "/consents"),
+                                         ("get", "/consents/x"), ("post", "/consents/x/revoke")])
 def test_TC_C_06_bff_socio_no_expone_consentimientos(method, path, token_for):
     resp = requests.request(method, f"{BFF_SOCIO}{path}",
                             headers={"Authorization": f"Bearer {token_for('socio-a')}"},

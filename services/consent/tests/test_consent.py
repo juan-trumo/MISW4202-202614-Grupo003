@@ -103,6 +103,16 @@ def test_revocar_es_inmediato_e_idempotente(consent, ctx):
     assert _check(http, consent, "C-005") == {"allowed": False, "reason": "consent_revoked"}
 
 
+def test_listar_devuelve_solo_los_propios(consent, ctx):
+    http, audit = ctx
+    _create(http, consent, sub="cliente-040", customer_id="C-040")
+    _create(http, consent, sub="cliente-041", customer_id="C-041")
+    own = http.get("/consents", headers=_h(consent, sub="cliente-040", customer_id="C-040"))
+    assert own.status_code == 200
+    assert {c["customer_id"] for c in own.get_json()} == {"C-040"}
+    assert audit.events[-1]["decision"] == "ALLOW"
+
+
 def test_decisiones_de_check(consent, ctx):
     http, audit = ctx
     owner = {"sub": "cliente-010", "customer_id": "C-010"}

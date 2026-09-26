@@ -104,6 +104,17 @@ def create_consent():
     return jsonify(consent.to_dict()), 201
 
 
+@app.get("/consents")
+@scopes.require_scope(scopes.CONSENT_WRITE, action="consent.list")
+def list_own_consents():
+    customer_id = _owner_customer_id("consent.list")
+    query = select(Consent).where(Consent.customer_id == customer_id).order_by(Consent.created_at)
+    with Session() as session:
+        consents = [c.to_dict() for c in session.scalars(query)]
+    _audit("consent.list", ALLOW, "owner")
+    return jsonify(consents)
+
+
 @app.get("/consents/<consent_id>")
 @scopes.require_scope(scopes.CONSENT_WRITE, action="consent.read")
 def get_consent(consent_id: str):
