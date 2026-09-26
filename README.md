@@ -1,5 +1,7 @@
 # Experimento de seguridad Solventa — MISW4202 · Grupo 003
 
+Presentación de resultados y animación en vercel: https://solventa-grupo03.vercel.app
+
 Experimento de arquitectura (no es un producto) que valida con evidencia medible dos escenarios de seguridad del caso Solventa:
 
 - **SEG-02 — Consentimiento Open Finance (confidencialidad):** solo el socio autorizado, para el propósito aprobado, usa los datos financieros del cliente; un consentimiento revocado deja de autorizar su uso en **≤ 300 s**; el **100 %** de los accesos queda auditado.
