@@ -1,6 +1,7 @@
 # Experimento de seguridad Solventa — MISW4202 · Grupo 003
 
 Presentación de resultados y animación en vercel: https://solventa-grupo03.vercel.app
+
 Video Demostración: https://www.youtube.com/watch?v=F8FnP-j-aKg
 
 Experimento de arquitectura (no es un producto) que valida con evidencia medible dos escenarios de seguridad del caso Solventa:
